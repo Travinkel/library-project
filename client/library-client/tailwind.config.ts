@@ -1,4 +1,6 @@
-﻿import type { Config } from "tailwindcss";
+﻿// @ts-ignore
+import type { Config } from "tailwindcss";
+
 import daisyui from "daisyui";
 
 // --- Candlekeep (light) ---

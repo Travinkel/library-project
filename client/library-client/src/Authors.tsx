@@ -6,7 +6,7 @@ export default function Authors() {
             <div className="hero min-h-[60vh] bg-base-200">
                 <div className="hero-content flex-col lg:flex-row gap-8">
                     <img
-                        src="/images/profile.webp"
+                        src="/assets/profile.webp"
                         alt="Archmage of Candlekeep"
                         className="max-w-sm rounded-2xl shadow-2xl border-4 border-primary"
                     />
