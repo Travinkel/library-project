@@ -1,5 +1,6 @@
-﻿using LibraryProject.Api.Services;
+using LibraryProject.Api.Services;
 using LibraryProject.DataAccess.Models;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryProject.Api;
@@ -27,17 +28,23 @@ public partial class Program
         });
 
         // DbContext
-        services.AddDbContext<LibraryDbContext>(options => 
+        services.AddDbContext<LibraryDbContext>(options =>
             options.UseNpgsql(connStr));
-        
+
         // Controllers + Swagger
         services.AddControllers();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen();
-        
+
         // Services
         services.AddScoped<GenreService>();
+        services.AddScoped<IAuthorService, AuthorService>();
         services.AddScoped<AuthorService>();
         services.AddScoped<BookService>();
+    }
+
+    public static void ConfigureServices(IServiceCollection services, IConfiguration config, IWebHostEnvironment env)
+    {
+        ConfigureServices(services, config);
     }
 }

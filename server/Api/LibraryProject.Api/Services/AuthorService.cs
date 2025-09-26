@@ -1,45 +1,46 @@
-﻿using LibraryProject.DataAccess;
 using LibraryProject.Api.DTOs;
+using System;
 using LibraryProject.DataAccess.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryProject.Api.Services;
 
-public class AuthorService
+public class AuthorService : IAuthorService
 {
     private readonly LibraryDbContext _context;
+
     public AuthorService(LibraryDbContext context) => _context = context;
 
-    public async Task<List<AuthorDTO>> GetAllAsync() =>
+    public async Task<IReadOnlyList<AuthorDto>> GetAllAsync() =>
         await _context.Authors.AsNoTracking()
-            .Select(a => new AuthorDTO(a.Id, a.Name))
+            .Select(a => new AuthorDto(a.Id, a.Name))
             .ToListAsync();
-    
-    public async Task<AuthorDTO?> GetByIdAsync(string id)
+
+    public async Task<AuthorDto?> GetByIdAsync(string id)
     {
-        var a = await _context.Authors.AsNoTracking().FirstOrDefaultAsync(x => x.Id == id);
-        if (a == null) return null;
-        return new AuthorDTO(a.Id, a.Name);
+        var entity = await _context.Authors.AsNoTracking()
+            .FirstOrDefaultAsync(a => a.Id == id);
+        return entity is null ? null : new AuthorDto(entity.Id, entity.Name);
     }
 
-    public async Task<AuthorDTO> CreateAsync(CreateAuthorDTO dto)
+    public async Task<string> CreateAsync(CreateAuthorDto dto)
     {
-        var author = new LibraryProject.DataAccess.Models.Author
+        var author = new Author
         {
             Id = Guid.NewGuid().ToString(),
             Name = dto.Name,
-            Createdat = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
+
         _context.Authors.Add(author);
         await _context.SaveChangesAsync();
-        return new AuthorDTO(author.Id, author.Name);
+
+        return author.Id;
     }
-    
-    public async Task<AuthorDTO> UpdateAsync(string id, CreateAuthorDTO dto)
-        => throw new NotImplementedException();
 
-    public async Task DeleteAsync(string id)
-        => throw new NotImplementedException();
+    public Task<AuthorDto> UpdateAsync(string id, CreateAuthorDto dto) =>
+        throw new NotImplementedException();
 
+    public Task DeleteAsync(string id) =>
+        throw new NotImplementedException();
 }

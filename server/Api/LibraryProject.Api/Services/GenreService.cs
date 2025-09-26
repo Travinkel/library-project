@@ -29,7 +29,7 @@ public class GenreService
         {
             Id = Guid.NewGuid().ToString(),
             Name = dto.Name,
-            Createdat = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
         _context.Genres.Add(genre);
         await _context.SaveChangesAsync();

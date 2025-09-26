@@ -31,7 +31,7 @@ public class BookService
             Title = dto.Title,
             Pages = dto.Pages,
             Genreid = dto.GenreId,
-            Createdat = DateTime.UtcNow
+            CreatedAt = DateTime.UtcNow
         };
         _context.Books.Add(book);
         await _context.SaveChangesAsync();

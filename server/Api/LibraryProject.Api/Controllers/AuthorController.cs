@@ -1,7 +1,7 @@
-﻿using LibraryProject.Api.DTOs;
+using LibraryProject.Api.DTOs;
 using LibraryProject.Api.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryProject.Api.Controllers;
 
@@ -9,36 +9,50 @@ namespace LibraryProject.Api.Controllers;
 [Route("api/[controller]")]
 public class AuthorController : ControllerBase
 {
-    private readonly AuthorService _service;
-    public AuthorController(AuthorService service) => _service = service;
-    
+    private readonly IAuthorService _service;
+
+    public AuthorController(IAuthorService service) => _service = service;
+
     [HttpGet]
     [Produces("application/json")]
-    public async Task<ActionResult<List<AuthorDTO>>> GetAll()
-        => await _service.GetAllAsync();
+    public async Task<ActionResult<IEnumerable<AuthorDto>>> GetAll()
+    {
+        var authors = await _service.GetAllAsync();
+        return Ok(authors);
+    }
 
     [HttpPost]
-    [Produces("application/json")] 
-    [ProducesResponseType(typeof(AuthorDTO), StatusCodes.Status201Created)]
+    [Produces("application/json")]
+    [ProducesResponseType(typeof(AuthorDto), StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<ActionResult<AuthorDTO>> Create(CreateAuthorDTO dto)
+    public async Task<ActionResult<AuthorDto>> Create(CreateAuthorDto dto)
     {
-        var author = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = author.Id }, author);
+        var id = await _service.CreateAsync(dto);
+        var author = await _service.GetByIdAsync(id);
+        if (author is null)
+        {
+            return Problem(detail: "Author could not be retrieved after creation.", statusCode: StatusCodes.Status500InternalServerError);
+        }
+
+        return CreatedAtAction(nameof(GetById), new { id }, author);
     }
 
     [HttpGet("{id}")]
     [Produces("application/json")]
-    public async Task<ActionResult<AuthorDTO>> GetById(string id)
+    public async Task<ActionResult<AuthorDto>> GetById(string id)
     {
         var author = await _service.GetByIdAsync(id);
-        if (author == null) return NotFound();
+        if (author is null)
+        {
+            return NotFound();
+        }
+
         return Ok(author);
     }
-    
+
     [HttpPut("{id}")]
     [Produces("application/json")]
-    public async Task<ActionResult<AuthorDTO>> Update(string id, CreateAuthorDTO dto)
+    public async Task<ActionResult<AuthorDto>> Update(string id, CreateAuthorDto dto)
     {
         var updated = await _service.UpdateAsync(id, dto);
         return Ok(updated);
@@ -50,5 +64,4 @@ public class AuthorController : ControllerBase
         await _service.DeleteAsync(id);
         return NoContent();
     }
-
 }

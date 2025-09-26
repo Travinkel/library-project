@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 // Call the extracted method from partial class for testability
-LibraryProject.Api.Program.ConfigureServices(builder.Services, builder.Configuration);
+LibraryProject.Api.ServiceConfiguration.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
