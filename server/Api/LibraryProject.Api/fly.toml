@@ -16,7 +16,7 @@ primary_region = 'cdg'
 
 
 [build]
-  image = "ghcr.io/travinkel/library-project/library-api:latest"
+  image = "ghcr.io/travinkel/library-project/library-api:edge"
 
 [env]
   ASPNETCORE_URLS = 'http://0.0.0.0:8080'
@@ -29,6 +29,10 @@ primary_region = 'cdg'
   [[services.ports]]
     port = 80
     handlers = ['http']
+  
+  [[services.ports]]
+    port = 443
+    handlers = ["tls", "http"]
 
 [[vm]]
   memory = '1gb'
