@@ -3,7 +3,7 @@ import { ApiClient, CreateGenreDTO } from "./apiClient";
 
 function App() {
     useEffect(() => {
-        const client = new ApiClient("http://localhost:5132");
+        const client = new ApiClient(import.meta.env.VITE_API_URL);
 
         const run = async () => {
             try {
@@ -27,6 +27,8 @@ function App() {
     return (
         <div>
             <h1>Library Client</h1>
+            <a className="btn btn-ghost" href="/books">Books</a>
+            <a className="btn btn-ghost" href="/authors">Authors</a>
         </div>
     );
 }
