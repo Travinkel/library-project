@@ -16,7 +16,8 @@ primary_region = 'cdg'
 
 
 [build]
-  image = "ghcr.io/Travinkel/LibraryProject/library-api:latest"
+image = "ghcr.io/Travinkel/LibraryProject/library-api:latest"
+
 
 [env]
   ASPNETCORE_URLS = 'http://0.0.0.0:8080'
