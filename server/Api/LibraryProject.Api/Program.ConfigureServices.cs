@@ -39,7 +39,6 @@ public partial class Program
         // Services
         services.AddScoped<GenreService>();
         services.AddScoped<IAuthorService, AuthorService>();
-        services.AddScoped<AuthorService>();
         services.AddScoped<BookService>();
     }
 
