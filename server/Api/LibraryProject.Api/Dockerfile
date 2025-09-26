@@ -6,15 +6,15 @@ WORKDIR /src
 # See .github/workflows/docker.yml where context is set to ./server and this file is specified via 'file'.
 
 # Copy project files and restore
-COPY Api/LibraryProject.Api/LibraryProject.Api.csproj LibraryProject.Api/
-COPY DataAccess/LibraryProject.DataAccess/LibraryProject.DataAccess.csproj LibraryProject.DataAccess/
-RUN dotnet restore LibraryProject.Api/LibraryProject.Api.csproj
+COPY Api/LibraryProject.Api/LibraryProject.Api.csproj Api/LibraryProject.Api/
+COPY DataAccess/LibraryProject.DataAccess/LibraryProject.DataAccess.csproj DataAccess/LibraryProject.DataAccess/
+RUN dotnet restore Api/LibraryProject.Api/LibraryProject.Api.csproj
 
 # Copy source code
-COPY Api/LibraryProject.Api/ LibraryProject.Api/
-COPY DataAccess/LibraryProject.DataAccess/ LibraryProject.DataAccess/
+COPY Api/LibraryProject.Api/ Api/LibraryProject.Api/
+COPY DataAccess/LibraryProject.DataAccess/ DataAccess/LibraryProject.DataAccess/
 
-WORKDIR /src/LibraryProject.Api
+WORKDIR /src/Api/LibraryProject.Api
 RUN dotnet publish LibraryProject.Api.csproj -c Release -o /app/publish
 
 # Runtime image

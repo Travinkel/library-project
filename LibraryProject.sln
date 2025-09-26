@@ -1,7 +1,10 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# 
+#
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{B6889087-36B3-4528-9681-5A9D4914FF94}"
+	ProjectSection(SolutionItems) = preProject
+		server\.dockerignore = server\.dockerignore
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{5FEF78C3-8715-43F9-B3B2-56C41F72B486}"
 EndProject
