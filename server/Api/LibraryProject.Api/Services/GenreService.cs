@@ -1,6 +1,7 @@
 ﻿using LibraryProject.DataAccess;
 using LibraryProject.Api.DTOs;
 using LibraryProject.DataAccess.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryProject.Api.Services;
@@ -34,4 +35,11 @@ public class GenreService
         await _context.SaveChangesAsync();
         return new GenreDTO(genre.Id, genre.Name);
     }
+    
+    public async Task<GenreDTO> UpdateAsync(string id, CreateGenreDTO dto)
+        => throw new NotImplementedException();
+
+    public async Task DeleteAsync(string id)
+        => throw new NotImplementedException();
+
 }

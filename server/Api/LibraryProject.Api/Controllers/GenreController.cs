@@ -36,5 +36,20 @@ public class GenreController : ControllerBase
         return Ok(genre);
     }
     
+    [HttpPut("{id}")]
+    [Produces("application/json")]
+    public async Task<ActionResult<GenreDTO>> Update(string id, CreateGenreDTO dto)
+    {
+        var updated = await _service.UpdateAsync(id, dto);
+        return Ok(updated);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _service.DeleteAsync(id);
+        return NoContent();
+    }
+
     
 }

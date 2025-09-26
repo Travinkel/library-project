@@ -35,4 +35,20 @@ public class AuthorController : ControllerBase
         if (author == null) return NotFound();
         return Ok(author);
     }
+    
+    [HttpPut("{id}")]
+    [Produces("application/json")]
+    public async Task<ActionResult<AuthorDTO>> Update(string id, CreateAuthorDTO dto)
+    {
+        var updated = await _service.UpdateAsync(id, dto);
+        return Ok(updated);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _service.DeleteAsync(id);
+        return NoContent();
+    }
+
 }

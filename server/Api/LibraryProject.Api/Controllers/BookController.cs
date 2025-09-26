@@ -35,4 +35,20 @@ public class BookController : ControllerBase
         if (book == null) return NotFound();
         return Ok(book);
     }
+    
+    [HttpPut("{id}")]
+    [Produces("application/json")]
+    public async Task<ActionResult<BookDTO>> Update(string id, CreateBookDTO dto)
+    {
+        var updated = await _service.UpdateAsync(id, dto);
+        return Ok(updated);
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
+    {
+        await _service.DeleteAsync(id);
+        return NoContent();
+    }
+
 }

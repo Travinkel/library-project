@@ -1,35 +1,34 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect } from "react";
+import { ApiClient, CreateGenreDTO } from "./apiClient";
 
 function App() {
-  const [count, setCount] = useState(0)
+    useEffect(() => {
+        const client = new ApiClient("http://localhost:5132");
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+        const run = async () => {
+            try {
+                const dto = new CreateGenreDTO();
+                dto.name = "Fantasy";
+                // Create a genre (POST)
+                const created = await client.genrePOST(dto);
+                console.log("Created:", created);
+
+                // Get all genres (GET)
+                const genres = await client.genreAll();
+                console.log("Genres:", genres);
+            } catch (err) {
+                console.error("API error:", err);
+            }
+        };
+
+        run();
+    }, []);
+
+    return (
+        <div>
+            <h1>Library Client</h1>
+        </div>
+    );
 }
 
-export default App
+export default App;

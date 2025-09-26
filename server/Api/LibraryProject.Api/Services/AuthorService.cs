@@ -1,6 +1,7 @@
 ﻿using LibraryProject.DataAccess;
 using LibraryProject.Api.DTOs;
 using LibraryProject.DataAccess.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryProject.Api.Services;
@@ -34,4 +35,11 @@ public class AuthorService
         await _context.SaveChangesAsync();
         return new AuthorDTO(author.Id, author.Name);
     }
+    
+    public async Task<AuthorDTO> UpdateAsync(string id, CreateAuthorDTO dto)
+        => throw new NotImplementedException();
+
+    public async Task DeleteAsync(string id)
+        => throw new NotImplementedException();
+
 }
