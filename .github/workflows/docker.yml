@@ -29,13 +29,12 @@ jobs:
           file: ./server/Api/LibraryProject.Api/Dockerfile
           push: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/library-project/library-api:sha-${{ github.sha }}
-            ghcr.io/${{ github.repository_owner }}/library-project/library-api:${{ github.ref_name == 'main' && 'latest' || 'edge' }}
-      
-      
+            ghcr.io/travinkel/library-project/library-api:sha-${{ github.sha }}
+            ghcr.io/travinkel/library-project/library-api:${{ github.ref_name == 'main' && 'latest' || 'edge' }}
+
       - name: Tag release image
         if: startsWith(github.ref, 'refs/tags/')
         run: |
-          docker pull ghcr.io/${{ github.repository }}/library-api:latest
-          docker tag ghcr.io/${{ github.repository }}/library-api:latest ghcr.io/${{ github.repository }}/library-api:${GITHUB_REF#refs/tags/}
-          docker push ghcr.io/${{ github.repository }}/library-api:${GITHUB_REF#refs/tags/}
+          docker pull ghcr.io/travinkel/library-project/library-api:latest
+          docker tag ghcr.io/travinkel/library-project/library-api:latest ghcr.io/travinkel/library-project/library-api:${GITHUB_REF#refs/tags/}
+          docker push ghcr.io/travinkel/library-project/library-api:${GITHUB_REF#refs/tags/}
