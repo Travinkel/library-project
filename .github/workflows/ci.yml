@@ -1,0 +1,47 @@
+﻿name: CI
+
+on:
+  pull_request:
+    branches: [develop, main]
+  push:
+    branches: [develop, feature/**]
+
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: testdb
+        ports: ['5432:5432']
+        options: >-
+          --health-cmd="pg_isready -U postgres" --health-interval=10s
+          --health-timeout=5s --health-retries=5
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with: { dotnet-version: '8.0.x' }
+
+      - name: Restore & build
+        run: |
+          dotnet restore ./LibraryProject.sln
+          dotnet build -c Release --no-restore ./LibraryProject.sln
+
+      - name: Run tests
+        run: dotnet test -c Release --no-build ./tests/LibraryProject.Tests/LibraryProject.Tests.csproj
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with: { node-version: '20' }
+
+      - name: Client install & typecheck
+        working-directory: client/library-client
+        run: |
+          npm ci
+          npm run build # ensures TS type safety & prod build
