@@ -49,13 +49,28 @@ var app = builder.Build();
 // Must use CORS before endpoints/Swagger - indeed - After builder.Build(); truly also..
 app.UseCors("AllowAll");
 
+// Always enable Swagger (both dev + prod, useful for demo)
+app.UseSwagger();
+app.UseSwaggerUI();
+
 if (app.Environment.IsDevelopment())
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseDeveloperExceptionPage();
+}
+else
+{
+    // Do NOT use HTTPS redirection on Fly.
+    // Fly handles TLS termination at the edge.
+    // When your code tries to redirect, the browser
+    // is sent to an HTTPS endpoint that doesn’t exist
+    // → ERR_CONNECTION_CLOSED.
+    // app.UseHttpsRedirection();
 }
 
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
+
+// Redirect root to Swagger
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 app.Run();
