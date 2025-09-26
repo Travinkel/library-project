@@ -1,6 +1,4 @@
-﻿// @ts-ignore
-import type { Config } from "tailwindcss";
-
+﻿import type { Config } from "tailwindcss";
 import daisyui from "daisyui";
 
 // --- Candlekeep (light) ---
@@ -51,7 +49,7 @@ const candlekeepNight = {
     "error-content": "#0B1020",
 };
 
-export default {
+const config = {
     content: [
         "./index.html",
         "./src/**/*.{ts,tsx,js,jsx}",
@@ -65,5 +63,9 @@ export default {
             { candlekeep },
             { "candlekeep-night": candlekeepNight },
         ],
+        darkTheme: "candlekeep-night",
+        logs: false,
     },
-} satisfies Config;
+} as const satisfies Config;
+
+export default config;
