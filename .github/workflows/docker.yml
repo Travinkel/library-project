@@ -2,9 +2,9 @@
 
 on:
   push:
-    branches: [develop, main]
-  push:
-    tags: ['v*.*.*']
+    branches: [ main, develop ]
+    tags:
+      - "v*.*.*"
 
 jobs:
   docker:
