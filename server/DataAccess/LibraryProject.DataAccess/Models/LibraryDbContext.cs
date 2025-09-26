@@ -26,7 +26,7 @@ public partial class LibraryDbContext : DbContext
             entity.ToTable("author", "library");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat).HasColumnName("createdat");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdat");
             entity.Property(e => e.Name).HasColumnName("name");
 
             entity.HasMany(d => d.Books).WithMany(p => p.Authors)
@@ -54,7 +54,7 @@ public partial class LibraryDbContext : DbContext
             entity.ToTable("book", "library");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat).HasColumnName("createdat");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdat");
             entity.Property(e => e.Genreid).HasColumnName("genreid");
             entity.Property(e => e.Pages).HasColumnName("pages");
             entity.Property(e => e.Title).HasColumnName("title");
@@ -72,7 +72,7 @@ public partial class LibraryDbContext : DbContext
             entity.ToTable("genre", "library");
 
             entity.Property(e => e.Id).HasColumnName("id");
-            entity.Property(e => e.Createdat).HasColumnName("createdat");
+            entity.Property(e => e.CreatedAt).HasColumnName("createdat");
             entity.Property(e => e.Name).HasColumnName("name");
         });
 
