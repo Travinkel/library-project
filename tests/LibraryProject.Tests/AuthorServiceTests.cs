@@ -1,18 +1,9 @@
-using System.Collections.Generic;
-using System.IO;
-using LibraryProject.Api;
+using System;
 using LibraryProject.Api.DTOs;
 using LibraryProject.Api.Services;
-using LibraryProject.DataAccess.Models;
-using LibraryProject.Tests;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Controllers;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.FileProviders;
-using Npgsql;
-using Testcontainers.PostgreSql;
+
+namespace LibraryProject.Tests;
 
 public class AuthorServiceTests : ServiceTestBase<AuthorService>
 {
@@ -24,5 +15,27 @@ public class AuthorServiceTests : ServiceTestBase<AuthorService>
 
         Assert.Equal("Ursula K. Le Guin", found.Name);
         Assert.True(found.CreatedAt.HasValue);
+    }
+
+    [Fact]
+    public async Task CreateAuthor_EmptyName_Throws()
+    {
+        var ex = await Assert.ThrowsAsync<ArgumentException>(
+            () => Svc.CreateAsync(new CreateAuthorDto(" ")));
+        Assert.Contains("empty", ex.Message, StringComparison.OrdinalIgnoreCase);
+    }
+
+    [Fact]
+    public async Task UpdateAuthor_ChangesName()
+    {
+        var id = await Svc.CreateAsync(new CreateAuthorDto("Initial"));
+
+        var updated = await Svc.UpdateAsync(id, new CreateAuthorDto("Opdateret"));
+
+        Assert.NotNull(updated);
+        Assert.Equal("Opdateret", updated!.Name);
+
+        var entity = await Db.Authors.AsNoTracking().SingleAsync(a => a.Id == id);
+        Assert.Equal("Opdateret", entity.Name);
     }
 }
