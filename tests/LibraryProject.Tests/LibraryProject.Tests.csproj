@@ -24,7 +24,7 @@
     <Using Include="Xunit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\server\Api\LibraryProject.Api\LibraryProject.Api.csproj" />
+    <ProjectReference Include="..\\..\\server\\LibraryProject.Api\\LibraryProject.Api.csproj" />
     <ProjectReference Include="..\..\server\DataAccess\LibraryProject.DataAccess\LibraryProject.DataAccess.csproj" />
   </ItemGroup>
   <ItemGroup>
@@ -33,3 +33,4 @@
     </None>
   </ItemGroup>
 </Project>
+

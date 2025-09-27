@@ -1,4 +1,4 @@
-﻿
+
 Microsoft Visual Studio Solution File, Format Version 12.00
 #
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{B6889087-36B3-4528-9681-5A9D4914FF94}"
@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "server", "server", "{B68890
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{5FEF78C3-8715-43F9-B3B2-56C41F72B486}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryProject.Api", "server\Api\LibraryProject.Api\LibraryProject.Api.csproj", "{3FC98897-7361-49ED-B924-C3C5CA1BA0DD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibraryProject.Api", "server\\LibraryProject.Api\\LibraryProject.Api.csproj", "{3FC98897-7361-49ED-B924-C3C5CA1BA0DD}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DataAccess", "DataAccess", "{2568D9EE-CAD2-4CE4-961B-77FCBC276159}"
 EndProject
@@ -45,3 +45,5 @@ Global
 		{64C23A23-B9DA-4A9D-A543-249FE6D0C6D2} = {12437652-74F2-4C17-B277-7EE4A5D58311}
 	EndGlobalSection
 EndGlobal
+
+
