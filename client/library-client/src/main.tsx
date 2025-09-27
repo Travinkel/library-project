@@ -1,27 +1,38 @@
-import ReactDOM from "react-dom/client";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+﻿import ReactDOM from "react-dom/client";
+import {
+    createBrowserRouter,
+    RouterProvider,
+} from "react-router-dom";
 
 import App from "./App";
-import Books from "./Books";
-import Authors from "./Authors";
+import Home from "./Home";
 import About from "./About";
-import "./index.css";
+import Authors from "./Authors";
+import Books from "./Books";
+import Genres from "./Genres";
 
 import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
+import "./index.css";
 
-
-
+const router = createBrowserRouter([
+    {
+        path: "/",
+        element: <App />,
+        children: [
+            { index: true, element: <Home /> },
+            { path: "about", element: <About /> },
+            { path: "books", element: <Books /> },
+            { path: "authors", element: <Authors /> },
+            { path: "genres", element: <Genres /> },
+        ],
+    },
+]);
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-    <BrowserRouter>
-        <Routes>
-            <Route path="/" element={<App />} />
-            <Route path="/books" element={<Books />} />
-            <Route path="/authors" element={<Authors />} />
-
-            <Route path="/about" element={<About />} />
-        </Routes>
+    <>
+        <RouterProvider router={router} />
         <DevTools />
-    </BrowserRouter>
+    </>
 );
+

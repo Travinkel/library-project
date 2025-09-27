@@ -13,6 +13,8 @@ export default function ThemeToggle() {
 
     // Load saved theme from localStorage
     useEffect(() => {
+        console.log("ThemeToggle mounted");
+
         const saved = localStorage.getItem("theme") as string | null;
         const initial = saved || LIGHT_THEME;
         setTheme(initial);
