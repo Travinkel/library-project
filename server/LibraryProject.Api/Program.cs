@@ -21,8 +21,14 @@ var app = builder.Build();
 app.UseCors("Default");
 
 // Always enable Swagger, regardless of environment
+// Swagger
 app.UseSwagger();
-app.UseSwaggerUI();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryProject.Api v1");
+    c.RoutePrefix = string.Empty; // serve at /
+});
+
 
 // if (app.Environment.IsDevelopment())
 // {
@@ -47,10 +53,8 @@ app.MapControllers();
 // Healthcheck, neat to have
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
-// Redirect root to Swagger if in development: Good for local testing.
-if (app.Environment.IsDevelopment())
-{
-    app.MapGet("/", () => Results.Redirect("/swagger"));
-}
+// Redirect root to Swagger for this demo api
+app.MapGet("/", () => Results.Redirect("/swagger"));
+
 
 app.Run();
