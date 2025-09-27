@@ -23,10 +23,11 @@ app.UseCors("Default");
 // Always enable Swagger, regardless of environment
 // Swagger
 app.UseSwagger();
-app.UseSwaggerUI(c =>
+app.UseSwaggerUI(options =>
 {
-    c.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryProject.Api v1");
-    c.RoutePrefix = string.Empty; // serve at /
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "LibraryProject.Api v1");
+    // Default RoutePrefix = "swagger" ensures UI is at /swagger
+    // Do NOT set RoutePrefix = string.Empty
 });
 
 
@@ -50,10 +51,10 @@ app.UseSwaggerUI(c =>
 app.UseAuthorization();
 app.MapControllers();
 
-// Healthcheck, neat to have
+// Healthcheck
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
-// Redirect root to Swagger for this demo api
+// Redirect root → /swagger
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 
