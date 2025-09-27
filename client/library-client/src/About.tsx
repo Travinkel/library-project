@@ -2,7 +2,7 @@
     return (
         <div className="min-h-screen bg-base-100 text-base-content flex flex-col items-center p-8">
             <img
-                src="/src/assets/profile.webp"
+                src="/assets/profile.webp"
                 alt="Portræt"
                 className="max-w-xs rounded-2xl shadow-2xl border-4 border-primary"
             />
