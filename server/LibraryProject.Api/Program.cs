@@ -10,8 +10,11 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 // Call the extracted method from partial class for testability
-ServiceConfiguration.ConfigureServices(builder.Services, builder.Configuration);
-
+ServiceConfiguration.ConfigureServices(
+    builder.Services,
+    builder.Configuration,
+    builder.Environment
+);
 var app = builder.Build();
 
 // Allow CORS Globally
