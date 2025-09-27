@@ -41,8 +41,8 @@ app.UseSwaggerUI(options =>
 //     // Do NOT use HTTPS redirection on Fly.
 //     // Fly handles TLS termination at the edge.
 //     // When your code tries to redirect, the browser
-//     // is sent to an HTTPS endpoint that doesn’t exist
-//     // → ERR_CONNECTION_CLOSED.
+//     // is sent to an HTTPS endpoint that doesn't exist
+//     // -> ERR_CONNECTION_CLOSED.
 //     // app.UseHttpsRedirection();
 // }
 
@@ -54,7 +54,7 @@ app.MapControllers();
 // Healthcheck
 app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
 
-// Redirect root → /swagger
+// Redirect root -> /swagger
 app.MapGet("/", () => Results.Redirect("/swagger"));
 
 
