@@ -20,11 +20,26 @@ public partial class Program
         // Add Cors
         services.AddCors(options =>
         {
-            options.AddPolicy("AllowAll",
-                policy => policy
-                    .AllowAnyOrigin()
+            options.AddPolicy("Default", policy =>
+            {
+                policy
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader();
+
+                if (env is not null && env.IsDevelopment())
+                {
+                    // Dev: allow everything
+                    policy.AllowAnyOrigin();
+                }
+                else
+                {
+                    // Prod: restrict to your client Fly.io app
+                    policy.WithOrigins(
+                        "https://library-client.fly.dev",
+                        "http://localhost:5173"
+                    );
+                }
+            });
         });
 
         // DbContext

@@ -10,18 +10,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Configuration.AddEnvironmentVariables();
 
 // Call the extracted method from partial class for testability
-LibraryProject.Api.ServiceConfiguration.ConfigureServices(builder.Services, builder.Configuration);
+ServiceConfiguration.ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
 
-app.UseCors("AllowAll");
-
-app.UseSwagger();
-app.UseSwaggerUI();
+// Allow CORS Globally
+app.UseCors("Default");
 
 if (app.Environment.IsDevelopment())
 {
-    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 else
 {
@@ -33,10 +32,18 @@ else
     // app.UseHttpsRedirection();
 }
 
+
+
 app.UseAuthorization();
 app.MapControllers();
 
-// Redirect root to Swagger
-app.MapGet("/", () => Results.Redirect("/swagger"));
+// Healthcheck, neat to have
+app.MapGet("/health", () => Results.Ok(new { status = "ok" }));
+
+// Redirect root to Swagger if in development: Good for local testing.
+if (app.Environment.IsDevelopment())
+{
+    app.MapGet("/", () => Results.Redirect("/swagger"));
+}
 
 app.Run();
