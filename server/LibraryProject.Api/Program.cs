@@ -20,20 +20,24 @@ var app = builder.Build();
 // Allow CORS Globally
 app.UseCors("Default");
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-else
-{
-    // Do NOT use HTTPS redirection on Fly.
-    // Fly handles TLS termination at the edge.
-    // When your code tries to redirect, the browser
-    // is sent to an HTTPS endpoint that doesn’t exist
-    // → ERR_CONNECTION_CLOSED.
-    // app.UseHttpsRedirection();
-}
+// Always enable Swagger, regardless of environment
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// if (app.Environment.IsDevelopment())
+// {
+//     app.UseSwagger();
+//     app.UseSwaggerUI();
+// }
+// else
+// {
+//     // Do NOT use HTTPS redirection on Fly.
+//     // Fly handles TLS termination at the edge.
+//     // When your code tries to redirect, the browser
+//     // is sent to an HTTPS endpoint that doesn’t exist
+//     // → ERR_CONNECTION_CLOSED.
+//     // app.UseHttpsRedirection();
+// }
 
 
 
