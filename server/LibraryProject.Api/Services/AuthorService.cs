@@ -1,5 +1,5 @@
-using LibraryProject.Api.DTOs;
 using System;
+using LibraryProject.Api.DTOs;
 using LibraryProject.DataAccess.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,6 +13,7 @@ public class AuthorService
 
     public async Task<IReadOnlyList<AuthorDto>> GetAllAsync() =>
         await _context.Authors.AsNoTracking()
+            .OrderBy(a => a.Name)
             .Select(a => new AuthorDto(a.Id, a.Name))
             .ToListAsync();
 
@@ -25,10 +26,16 @@ public class AuthorService
 
     public async Task<string> CreateAsync(CreateAuthorDto dto)
     {
+        var name = dto.Name?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Author name must not be empty.", nameof(dto));
+        }
+
         var author = new Author
         {
             Id = Guid.NewGuid().ToString(),
-            Name = dto.Name,
+            Name = name,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -40,10 +47,16 @@ public class AuthorService
 
     public async Task<AuthorDto?> UpdateAsync(string id, CreateAuthorDto dto)
     {
+        var name = dto.Name?.Trim();
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentException("Author name must not be empty.", nameof(dto));
+        }
+
         var author = await _context.Authors.FindAsync(id);
         if (author == null) return null;
 
-        author.Name = dto.Name;
+        author.Name = name;
         await _context.SaveChangesAsync();
 
         return new AuthorDto(author.Id, author.Name);
@@ -58,6 +71,4 @@ public class AuthorService
         await _context.SaveChangesAsync();
         return true;
     }
-
 }
-
