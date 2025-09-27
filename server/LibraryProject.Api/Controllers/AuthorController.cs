@@ -27,14 +27,21 @@ public class AuthorController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<AuthorDto>> Create(CreateAuthorDto dto)
     {
-        var id = await _service.CreateAsync(dto);
-        var author = await _service.GetByIdAsync(id);
-        if (author is null)
+        try
         {
-            return Problem(detail: "Author could not be retrieved after creation.", statusCode: StatusCodes.Status500InternalServerError);
-        }
+            var id = await _service.CreateAsync(dto);
+            var author = await _service.GetByIdAsync(id);
+            if (author is null)
+            {
+                return Problem(detail: "Author could not be retrieved after creation.", statusCode: StatusCodes.Status500InternalServerError);
+            }
 
-        return CreatedAtAction(nameof(GetById), new { id }, author);
+            return CreatedAtAction(nameof(GetById), new { id }, author);
+        }
+        catch (ArgumentException ex)
+        {
+            return ValidationProblem(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
@@ -54,15 +61,31 @@ public class AuthorController : ControllerBase
     [Produces("application/json")]
     public async Task<ActionResult<AuthorDto>> Update(string id, CreateAuthorDto dto)
     {
-        var updated = await _service.UpdateAsync(id, dto);
-        return Ok(updated);
+        try
+        {
+            var updated = await _service.UpdateAsync(id, dto);
+            if (updated is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updated);
+        }
+        catch (ArgumentException ex)
+        {
+            return ValidationProblem(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        await _service.DeleteAsync(id);
+        var deleted = await _service.DeleteAsync(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
         return NoContent();
     }
 }
-

@@ -1,7 +1,7 @@
-﻿using LibraryProject.Api.DTOs;
+using LibraryProject.Api.DTOs;
 using LibraryProject.Api.Services;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryProject.Api.Controllers;
 
@@ -23,8 +23,15 @@ public class BookController : ControllerBase
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult<BookDto>> Create(CreateBookDto dto)
     {
-        var book = await _service.CreateAsync(dto);
-        return CreatedAtAction(nameof(GetById), new { id = book.Id }, book);
+        try
+        {
+            var book = await _service.CreateAsync(dto);
+            return CreatedAtAction(nameof(GetById), new { id = book.Id }, book);
+        }
+        catch (ArgumentException ex)
+        {
+            return ValidationProblem(ex.Message);
+        }
     }
 
     [HttpGet("{id}")]
@@ -40,15 +47,31 @@ public class BookController : ControllerBase
     [Produces("application/json")]
     public async Task<ActionResult<BookDto>> Update(string id, CreateBookDto dto)
     {
-        var updated = await _service.UpdateAsync(id, dto);
-        return Ok(updated);
+        try
+        {
+            var updated = await _service.UpdateAsync(id, dto);
+            if (updated is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updated);
+        }
+        catch (ArgumentException ex)
+        {
+            return ValidationProblem(ex.Message);
+        }
     }
 
     [HttpDelete("{id}")]
     public async Task<IActionResult> Delete(string id)
     {
-        await _service.DeleteAsync(id);
+        var deleted = await _service.DeleteAsync(id);
+        if (!deleted)
+        {
+            return NotFound();
+        }
+
         return NoContent();
     }
-
 }
