@@ -1,25 +1,42 @@
 ﻿import { useAtom } from "jotai";
-import { apiClientAtom, authorsAtom } from "./state/atoms";
-import { useEffect} from "react";
+import { useEffect } from "react";
+import { genresAtom, fetchGenresAtom, deleteGenreAtom } from "./state/atoms";
 
-export default function Authors() {
-    const [client] = useAtom(apiClientAtom);
-    const [authors, setAuthors] = useAtom(authorsAtom);
+export default function Genres() {
+    const [genres] = useAtom(genresAtom);
+    const [, fetchGenres] = useAtom(fetchGenresAtom);
+    const [, deleteGenre] = useAtom(deleteGenreAtom);
 
     useEffect(() => {
-        client.authorAll().then(setAuthors);
+        fetchGenres();
     }, []);
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold">Authors</h1>
-            <ul className="mt-4 space-y-2">
-                {authors.map(a => (
-                    <li key={a.id} className="p-2 border-b">
-                        {a.name}
-                    </li>
+        <div>
+            <h1 className="text-3xl font-bold mb-4">Genrer</h1>
+            <table className="table w-full bg-base-200 rounded-xl shadow-md">
+                <thead>
+                <tr>
+                    <th>Navn</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {genres.map((g) => (
+                    <tr key={g.id}>
+                        <td>{g.name}</td>
+                        <td>
+                            <button
+                                onClick={() => deleteGenre(g.id!)}
+                                className="btn btn-error btn-sm"
+                            >
+                                Slet
+                            </button>
+                        </td>
+                    </tr>
                 ))}
-            </ul>
+                </tbody>
+            </table>
         </div>
     );
 }

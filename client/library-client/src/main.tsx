@@ -10,29 +10,8 @@ import "./index.css";
 import { DevTools } from "jotai-devtools";
 import "jotai-devtools/styles.css";
 
-const LIGHT_THEME = "candlekeep";
-const DARK_THEME = "candlekeep-night";
 
-if (typeof window !== "undefined") {
-    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)");
-    const applyTheme = (isDark: boolean) => {
-        document.documentElement.dataset.theme = isDark ? DARK_THEME : LIGHT_THEME;
-    };
 
-    applyTheme(prefersDark.matches);
-
-    const listener = (event: MediaQueryListEvent) => {
-        applyTheme(event.matches);
-    };
-
-    prefersDark.addEventListener("change", listener);
-
-    if (import.meta.hot) {
-        import.meta.hot.dispose(() => {
-            prefersDark.removeEventListener("change", listener);
-        });
-    }
-}
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
     <BrowserRouter>

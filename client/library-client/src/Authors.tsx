@@ -1,25 +1,31 @@
 ﻿import { useAtom } from "jotai";
-import { apiClientAtom, authorsAtom } from "./state/atoms";
-import { useEffect} from "react";
+import { useEffect } from "react";
+import { authorsAtom, fetchAuthorsAtom, deleteAuthorAtom } from "./state/atoms";
 
 export default function Authors() {
-    const [client] = useAtom(apiClientAtom);
-    const [authors, setAuthors] = useAtom(authorsAtom);
+    const [authors] = useAtom(authorsAtom);
+    const [, fetchAuthors] = useAtom(fetchAuthorsAtom);
+    const [, deleteAuthor] = useAtom(deleteAuthorAtom);
 
     useEffect(() => {
-        client.authorAll().then(setAuthors);
+        fetchAuthors();
     }, []);
 
     return (
-        <div className="p-6">
-            <h1 className="text-2xl font-bold">Authors</h1>
-            <ul className="mt-4 space-y-2">
-                {authors.map(a => (
-                    <li key={a.id} className="p-2 border-b">
-                        {a.name}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <table className="table">
+            <thead>
+            <tr><th>Navn</th><th></th></tr>
+            </thead>
+            <tbody>
+            {authors.map(a => (
+                <tr key={a.id}>
+                    <td>{a.name}</td>
+                    <td>
+                        <button onClick={() => deleteAuthor(a.id!)} className="btn btn-error btn-sm">Slet</button>
+                    </td>
+                </tr>
+            ))}
+            </tbody>
+        </table>
     );
 }
