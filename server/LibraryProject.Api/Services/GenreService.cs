@@ -28,9 +28,11 @@ public class GenreService
     {
         var name = dto.Name?.Trim();
         if (string.IsNullOrWhiteSpace(name))
-        {
             throw new ArgumentException("Genre name must not be empty.", nameof(dto));
-        }
+
+        var exists = await _context.Genres.AnyAsync(g => g.Name == name);
+        if (exists)
+            throw new InvalidOperationException($"Genre '{name}' already exists.");
 
         var genre = new Genre
         {
@@ -38,10 +40,13 @@ public class GenreService
             Name = name,
             CreatedAt = DateTime.UtcNow
         };
+
         _context.Genres.Add(genre);
         await _context.SaveChangesAsync();
+
         return new GenreDto(genre.Id, genre.Name);
     }
+
     
     public async Task<GenreDto?> UpdateAsync(string id, CreateGenreDto dto)
     {

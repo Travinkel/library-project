@@ -27,27 +27,30 @@ public class BookService
     {
         var title = dto.Title?.Trim();
         if (string.IsNullOrWhiteSpace(title))
-        {
             throw new ArgumentException("Book title must not be empty.", nameof(dto));
-        }
 
         if (dto.Pages <= 0)
-        {
             throw new ArgumentException("Pages must be greater than zero.", nameof(dto));
-        }
+
+        // ✅ Valgfrit – tjek for eksisterende bogtitel
+        var exists = await _context.Books.AnyAsync(b => b.Title == title);
+        if (exists)
+            throw new InvalidOperationException($"Book '{title}' already exists.");
 
         var book = new Book
         {
             Id = Guid.NewGuid().ToString(),
             Title = title,
             Pages = dto.Pages,
-            Genreid = string.IsNullOrWhiteSpace(dto.GenreId) ? null : dto.GenreId?.Trim(),
+            Genreid = string.IsNullOrWhiteSpace(dto.GenreId) ? null : dto.GenreId.Trim(),
             CreatedAt = DateTime.UtcNow
         };
+
         _context.Books.Add(book);
         await _context.SaveChangesAsync();
         return new BookDto(book.Id, book.Title, book.Pages, book.Genreid);
     }
+
     
     public async Task<BookDto?> UpdateAsync(string id, CreateBookDto dto)
     {

@@ -28,9 +28,12 @@ public class AuthorService
     {
         var name = dto.Name?.Trim();
         if (string.IsNullOrWhiteSpace(name))
-        {
             throw new ArgumentException("Author name must not be empty.", nameof(dto));
-        }
+
+        // ✅ Tjek for eksisterende forfatter
+        var exists = await _context.Authors.AnyAsync(a => a.Name == name);
+        if (exists)
+            throw new InvalidOperationException($"Author '{name}' already exists.");
 
         var author = new Author
         {
@@ -44,6 +47,7 @@ public class AuthorService
 
         return author.Id;
     }
+
 
     public async Task<AuthorDto?> UpdateAsync(string id, CreateAuthorDto dto)
     {

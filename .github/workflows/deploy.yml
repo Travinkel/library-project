@@ -13,6 +13,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: superfly/flyctl-actions@v1
         with:
-          args: "deploy -c server/Api/LibraryProject.Api/fly.toml"
+          args: "deploy -c server/LibraryProject.Api/fly.toml"
         env:
           FLY_API_TOKEN: ${{ secrets.FLY_API_TOKEN }}
