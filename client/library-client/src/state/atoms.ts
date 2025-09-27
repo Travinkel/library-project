@@ -1,5 +1,5 @@
 ﻿import { atom } from "jotai";
-import { ApiClient, AuthorDTO, BookDTO, GenreDTO } from "../apiClient";
+import { ApiClient, AuthorDto, BookDto, GenreDto } from "../apiClient";
 
 // Base API client atom (respects env var)
 export const apiClientAtom = atom(
@@ -7,9 +7,9 @@ export const apiClientAtom = atom(
 );
 
 // Entity state atoms
-export const authorsAtom = atom<AuthorDTO[]>([]);
-export const booksAtom = atom<BookDTO[]>([]);
-export const genresAtom = atom<GenreDTO[]>([]);
+export const authorsAtom = atom<AuthorDto[]>([]);
+export const booksAtom = atom<BookDto[]>([]);
+export const genresAtom = atom<GenreDto[]>([]);
 
 // -----------------------------
 // Authors

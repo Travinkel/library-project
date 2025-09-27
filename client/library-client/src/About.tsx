@@ -1,14 +1,17 @@
 ﻿export default function About() {
     return (
         <div className="min-h-screen bg-base-100 text-base-content flex flex-col items-center p-8">
-            <h1 className="text-4xl font-bold mb-6">Om Candlekeep Bibliotek</h1>
+            <img
+                src="/src/assets/profile.webp"
+                alt="Portræt"
+                className="max-w-xs rounded-2xl shadow-2xl border-4 border-primary"
+            />
+
+            <h1 className="text-3xl font-serif font-bold mt-6">Det Hemmelige Arkiv</h1>
 
             <p className="max-w-2xl text-lg leading-relaxed text-center mb-4">
-                Candlekeep er et unikt bibliotek, ledet af ærkemageren, hvor viden
-                bevares og stilles til rådighed for dem, der søger indsigt.
-                Biblioteket rummer tusindvis af bøger, skrifter og magiske tekster,
-                og fungerer som et åbent læringsrum for både studerende, forskere og
-                nysgerrige sjæle.
+                Velkommen til mit lille skjulte hjørne af Candlekeep. Her finder du bøger
+                fyldt med både viden og hemmeligheder, gemt for de få, som tør søge dem.
             </p>
 
             <p className="max-w-2xl text-lg leading-relaxed text-center mb-4">

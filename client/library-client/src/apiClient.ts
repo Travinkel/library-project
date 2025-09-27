@@ -20,7 +20,7 @@ export class ApiClient {
     /**
      * @return OK
      */
-    authorAll(signal?: AbortSignal): Promise<AuthorDTO[]> {
+    authorAll(signal?: AbortSignal): Promise<AuthorDto[]> {
         let url_ = this.baseUrl + "/api/Author";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -37,7 +37,7 @@ export class ApiClient {
         });
     }
 
-    protected processAuthorAll(response: Response): Promise<AuthorDTO[]> {
+    protected processAuthorAll(response: Response): Promise<AuthorDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -47,7 +47,7 @@ export class ApiClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(AuthorDTO.fromJS(item));
+                    result200!.push(AuthorDto.fromJS(item));
             }
             else {
                 result200 = null as any;
@@ -59,14 +59,14 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDTO[]>(null as any);
+        return Promise.resolve<AuthorDto[]>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Created
      */
-    authorPOST(body: CreateAuthorDTO | undefined, signal?: AbortSignal): Promise<AuthorDTO> {
+    authorPOST(body: CreateAuthorDto | undefined, signal?: AbortSignal): Promise<AuthorDto> {
         let url_ = this.baseUrl + "/api/Author";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -87,14 +87,14 @@ export class ApiClient {
         });
     }
 
-    protected processAuthorPOST(response: Response): Promise<AuthorDTO> {
+    protected processAuthorPOST(response: Response): Promise<AuthorDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = AuthorDTO.fromJS(resultData201);
+            result201 = AuthorDto.fromJS(resultData201);
             return result201;
             });
         } else if (status === 400) {
@@ -109,13 +109,13 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDTO>(null as any);
+        return Promise.resolve<AuthorDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    authorGET(id: string, signal?: AbortSignal): Promise<AuthorDTO> {
+    authorGET(id: string, signal?: AbortSignal): Promise<AuthorDto> {
         let url_ = this.baseUrl + "/api/Author/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -135,14 +135,14 @@ export class ApiClient {
         });
     }
 
-    protected processAuthorGET(response: Response): Promise<AuthorDTO> {
+    protected processAuthorGET(response: Response): Promise<AuthorDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = AuthorDTO.fromJS(resultData200);
+            result200 = AuthorDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -150,13 +150,96 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<AuthorDTO>(null as any);
+        return Promise.resolve<AuthorDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    authorPUT(id: string, body: CreateAuthorDto | undefined, signal?: AbortSignal): Promise<AuthorDto> {
+        let url_ = this.baseUrl + "/api/Author/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            signal,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAuthorPUT(_response);
+        });
+    }
+
+    protected processAuthorPUT(response: Response): Promise<AuthorDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = AuthorDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<AuthorDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    bookAll(signal?: AbortSignal): Promise<BookDTO[]> {
+    authorDELETE(id: string, signal?: AbortSignal): Promise<void> {
+        let url_ = this.baseUrl + "/api/Author/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            signal,
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAuthorDELETE(_response);
+        });
+    }
+
+    protected processAuthorDELETE(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    bookAll(signal?: AbortSignal): Promise<BookDto[]> {
         let url_ = this.baseUrl + "/api/Book";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -173,7 +256,7 @@ export class ApiClient {
         });
     }
 
-    protected processBookAll(response: Response): Promise<BookDTO[]> {
+    protected processBookAll(response: Response): Promise<BookDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -183,7 +266,7 @@ export class ApiClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(BookDTO.fromJS(item));
+                    result200!.push(BookDto.fromJS(item));
             }
             else {
                 result200 = null as any;
@@ -195,14 +278,14 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDTO[]>(null as any);
+        return Promise.resolve<BookDto[]>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Created
      */
-    bookPOST(body: CreateBookDTO | undefined, signal?: AbortSignal): Promise<BookDTO> {
+    bookPOST(body: CreateBookDto | undefined, signal?: AbortSignal): Promise<BookDto> {
         let url_ = this.baseUrl + "/api/Book";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -223,14 +306,14 @@ export class ApiClient {
         });
     }
 
-    protected processBookPOST(response: Response): Promise<BookDTO> {
+    protected processBookPOST(response: Response): Promise<BookDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = BookDTO.fromJS(resultData201);
+            result201 = BookDto.fromJS(resultData201);
             return result201;
             });
         } else if (status === 400) {
@@ -245,13 +328,13 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDTO>(null as any);
+        return Promise.resolve<BookDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    bookGET(id: string, signal?: AbortSignal): Promise<BookDTO> {
+    bookGET(id: string, signal?: AbortSignal): Promise<BookDto> {
         let url_ = this.baseUrl + "/api/Book/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -271,14 +354,14 @@ export class ApiClient {
         });
     }
 
-    protected processBookGET(response: Response): Promise<BookDTO> {
+    protected processBookGET(response: Response): Promise<BookDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = BookDTO.fromJS(resultData200);
+            result200 = BookDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -286,13 +369,96 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<BookDTO>(null as any);
+        return Promise.resolve<BookDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    bookPUT(id: string, body: CreateBookDto | undefined, signal?: AbortSignal): Promise<BookDto> {
+        let url_ = this.baseUrl + "/api/Book/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            signal,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processBookPUT(_response);
+        });
+    }
+
+    protected processBookPUT(response: Response): Promise<BookDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = BookDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<BookDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    genreAll(signal?: AbortSignal): Promise<GenreDTO[]> {
+    bookDELETE(id: string, signal?: AbortSignal): Promise<void> {
+        let url_ = this.baseUrl + "/api/Book/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            signal,
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processBookDELETE(_response);
+        });
+    }
+
+    protected processBookDELETE(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    genreAll(signal?: AbortSignal): Promise<GenreDto[]> {
         let url_ = this.baseUrl + "/api/Genre";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -309,7 +475,7 @@ export class ApiClient {
         });
     }
 
-    protected processGenreAll(response: Response): Promise<GenreDTO[]> {
+    protected processGenreAll(response: Response): Promise<GenreDto[]> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
@@ -319,7 +485,7 @@ export class ApiClient {
             if (Array.isArray(resultData200)) {
                 result200 = [] as any;
                 for (let item of resultData200)
-                    result200!.push(GenreDTO.fromJS(item));
+                    result200!.push(GenreDto.fromJS(item));
             }
             else {
                 result200 = null as any;
@@ -331,14 +497,14 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDTO[]>(null as any);
+        return Promise.resolve<GenreDto[]>(null as any);
     }
 
     /**
      * @param body (optional) 
      * @return Created
      */
-    genrePOST(body: CreateGenreDTO | undefined, signal?: AbortSignal): Promise<GenreDTO> {
+    genrePOST(body: CreateGenreDto | undefined, signal?: AbortSignal): Promise<GenreDto> {
         let url_ = this.baseUrl + "/api/Genre";
         url_ = url_.replace(/[?&]$/, "");
 
@@ -359,14 +525,14 @@ export class ApiClient {
         });
     }
 
-    protected processGenrePOST(response: Response): Promise<GenreDTO> {
+    protected processGenrePOST(response: Response): Promise<GenreDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 201) {
             return response.text().then((_responseText) => {
             let result201: any = null;
             let resultData201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result201 = GenreDTO.fromJS(resultData201);
+            result201 = GenreDto.fromJS(resultData201);
             return result201;
             });
         } else if (status === 400) {
@@ -381,13 +547,13 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDTO>(null as any);
+        return Promise.resolve<GenreDto>(null as any);
     }
 
     /**
      * @return OK
      */
-    genreGET(id: string, signal?: AbortSignal): Promise<GenreDTO> {
+    genreGET(id: string, signal?: AbortSignal): Promise<GenreDto> {
         let url_ = this.baseUrl + "/api/Genre/{id}";
         if (id === undefined || id === null)
             throw new globalThis.Error("The parameter 'id' must be defined.");
@@ -407,14 +573,14 @@ export class ApiClient {
         });
     }
 
-    protected processGenreGET(response: Response): Promise<GenreDTO> {
+    protected processGenreGET(response: Response): Promise<GenreDto> {
         const status = response.status;
         let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
         if (status === 200) {
             return response.text().then((_responseText) => {
             let result200: any = null;
             let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
-            result200 = GenreDTO.fromJS(resultData200);
+            result200 = GenreDto.fromJS(resultData200);
             return result200;
             });
         } else if (status !== 200 && status !== 204) {
@@ -422,15 +588,132 @@ export class ApiClient {
             return throwException("An unexpected server error occurred.", status, _responseText, _headers);
             });
         }
-        return Promise.resolve<GenreDTO>(null as any);
+        return Promise.resolve<GenreDto>(null as any);
+    }
+
+    /**
+     * @param body (optional) 
+     * @return OK
+     */
+    genrePUT(id: string, body: CreateGenreDto | undefined, signal?: AbortSignal): Promise<GenreDto> {
+        let url_ = this.baseUrl + "/api/Genre/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        const content_ = JSON.stringify(body);
+
+        let options_: RequestInit = {
+            body: content_,
+            method: "PUT",
+            signal,
+            headers: {
+                "Content-Type": "application/json",
+                "Accept": "application/json"
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGenrePUT(_response);
+        });
+    }
+
+    protected processGenrePUT(response: Response): Promise<GenreDto> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            let result200: any = null;
+            let resultData200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver);
+            result200 = GenreDto.fromJS(resultData200);
+            return result200;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<GenreDto>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    genreDELETE(id: string, signal?: AbortSignal): Promise<void> {
+        let url_ = this.baseUrl + "/api/Genre/{id}";
+        if (id === undefined || id === null)
+            throw new globalThis.Error("The parameter 'id' must be defined.");
+        url_ = url_.replace("{id}", encodeURIComponent("" + id));
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "DELETE",
+            signal,
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processGenreDELETE(_response);
+        });
+    }
+
+    protected processGenreDELETE(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
+    }
+
+    /**
+     * @return OK
+     */
+    anonymous(signal?: AbortSignal): Promise<void> {
+        let url_ = this.baseUrl + "/";
+        url_ = url_.replace(/[?&]$/, "");
+
+        let options_: RequestInit = {
+            method: "GET",
+            signal,
+            headers: {
+            }
+        };
+
+        return this.http.fetch(url_, options_).then((_response: Response) => {
+            return this.processAnonymous(_response);
+        });
+    }
+
+    protected processAnonymous(response: Response): Promise<void> {
+        const status = response.status;
+        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
+        if (status === 200) {
+            return response.text().then((_responseText) => {
+            return;
+            });
+        } else if (status !== 200 && status !== 204) {
+            return response.text().then((_responseText) => {
+            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
+            });
+        }
+        return Promise.resolve<void>(null as any);
     }
 }
 
-export class AuthorDTO implements IAuthorDTO {
+export class AuthorDto implements IAuthorDto {
     id?: string | undefined;
     name?: string | undefined;
 
-    constructor(data?: IAuthorDTO) {
+    constructor(data?: IAuthorDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -446,9 +729,9 @@ export class AuthorDTO implements IAuthorDTO {
         }
     }
 
-    static fromJS(data: any): AuthorDTO {
+    static fromJS(data: any): AuthorDto {
         data = typeof data === 'object' ? data : {};
-        let result = new AuthorDTO();
+        let result = new AuthorDto();
         result.init(data);
         return result;
     }
@@ -461,18 +744,18 @@ export class AuthorDTO implements IAuthorDTO {
     }
 }
 
-export interface IAuthorDTO {
+export interface IAuthorDto {
     id?: string | undefined;
     name?: string | undefined;
 }
 
-export class BookDTO implements IBookDTO {
+export class BookDto implements IBookDto {
     id?: string | undefined;
     title?: string | undefined;
     pages?: number;
     genreId?: string | undefined;
 
-    constructor(data?: IBookDTO) {
+    constructor(data?: IBookDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -490,9 +773,9 @@ export class BookDTO implements IBookDTO {
         }
     }
 
-    static fromJS(data: any): BookDTO {
+    static fromJS(data: any): BookDto {
         data = typeof data === 'object' ? data : {};
-        let result = new BookDTO();
+        let result = new BookDto();
         result.init(data);
         return result;
     }
@@ -507,17 +790,17 @@ export class BookDTO implements IBookDTO {
     }
 }
 
-export interface IBookDTO {
+export interface IBookDto {
     id?: string | undefined;
     title?: string | undefined;
     pages?: number;
     genreId?: string | undefined;
 }
 
-export class CreateAuthorDTO implements ICreateAuthorDTO {
+export class CreateAuthorDto implements ICreateAuthorDto {
     name?: string | undefined;
 
-    constructor(data?: ICreateAuthorDTO) {
+    constructor(data?: ICreateAuthorDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -532,9 +815,9 @@ export class CreateAuthorDTO implements ICreateAuthorDTO {
         }
     }
 
-    static fromJS(data: any): CreateAuthorDTO {
+    static fromJS(data: any): CreateAuthorDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateAuthorDTO();
+        let result = new CreateAuthorDto();
         result.init(data);
         return result;
     }
@@ -546,16 +829,16 @@ export class CreateAuthorDTO implements ICreateAuthorDTO {
     }
 }
 
-export interface ICreateAuthorDTO {
+export interface ICreateAuthorDto {
     name?: string | undefined;
 }
 
-export class CreateBookDTO implements ICreateBookDTO {
+export class CreateBookDto implements ICreateBookDto {
     title?: string | undefined;
     pages?: number;
     genreId?: string | undefined;
 
-    constructor(data?: ICreateBookDTO) {
+    constructor(data?: ICreateBookDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -572,9 +855,9 @@ export class CreateBookDTO implements ICreateBookDTO {
         }
     }
 
-    static fromJS(data: any): CreateBookDTO {
+    static fromJS(data: any): CreateBookDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateBookDTO();
+        let result = new CreateBookDto();
         result.init(data);
         return result;
     }
@@ -588,16 +871,16 @@ export class CreateBookDTO implements ICreateBookDTO {
     }
 }
 
-export interface ICreateBookDTO {
+export interface ICreateBookDto {
     title?: string | undefined;
     pages?: number;
     genreId?: string | undefined;
 }
 
-export class CreateGenreDTO implements ICreateGenreDTO {
+export class CreateGenreDto implements ICreateGenreDto {
     name?: string | undefined;
 
-    constructor(data?: ICreateGenreDTO) {
+    constructor(data?: ICreateGenreDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -612,9 +895,9 @@ export class CreateGenreDTO implements ICreateGenreDTO {
         }
     }
 
-    static fromJS(data: any): CreateGenreDTO {
+    static fromJS(data: any): CreateGenreDto {
         data = typeof data === 'object' ? data : {};
-        let result = new CreateGenreDTO();
+        let result = new CreateGenreDto();
         result.init(data);
         return result;
     }
@@ -626,15 +909,15 @@ export class CreateGenreDTO implements ICreateGenreDTO {
     }
 }
 
-export interface ICreateGenreDTO {
+export interface ICreateGenreDto {
     name?: string | undefined;
 }
 
-export class GenreDTO implements IGenreDTO {
+export class GenreDto implements IGenreDto {
     id?: string | undefined;
     name?: string | undefined;
 
-    constructor(data?: IGenreDTO) {
+    constructor(data?: IGenreDto) {
         if (data) {
             for (var property in data) {
                 if (data.hasOwnProperty(property))
@@ -650,9 +933,9 @@ export class GenreDTO implements IGenreDTO {
         }
     }
 
-    static fromJS(data: any): GenreDTO {
+    static fromJS(data: any): GenreDto {
         data = typeof data === 'object' ? data : {};
-        let result = new GenreDTO();
+        let result = new GenreDto();
         result.init(data);
         return result;
     }
@@ -665,7 +948,7 @@ export class GenreDTO implements IGenreDTO {
     }
 }
 
-export interface IGenreDTO {
+export interface IGenreDto {
     id?: string | undefined;
     name?: string | undefined;
 }

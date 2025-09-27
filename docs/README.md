@@ -59,7 +59,7 @@ Workflows are in `.github/workflows/`.
 
 ## 4) Containers to GHCR
 
-- API Dockerfile: `server/Api/LibraryProject.Api/Dockerfile` (multi-stage .NET 8 build/publish).
+- API Dockerfile: `server/LibraryProject.Api/Dockerfile` (multi-stage .NET 8 build/publish).
 - `docker.yml` builds and pushes images to GitHub Container Registry (GHCR) on pushes to `develop`/`main` and on tags `v*.*.*`.
 - Tagging schema used in the workflow:
   - `library-api:sha-<git_sha>` on every push
@@ -68,7 +68,7 @@ Workflows are in `.github/workflows/`.
 
 ## 5) Deploy via Fly.io
 
-- Configuration: `server/Api/LibraryProject.Api/fly.toml`
+- Configuration: `server/LibraryProject.Api/fly.toml`
 - We pull the image from GHCR.
 - Set the DB connection string as a Fly secret:
 
@@ -123,7 +123,7 @@ Get-Content .env | ForEach-Object {
 - Run API locally:
 
 ```powershell
-cd server\Api\LibraryProject.Api
+cd server\LibraryProject.Api
 $env:CONN_STR="Host=localhost;Port=5432;Username=postgres;Password=postgres;Database=testdb"
 dotnet run
 ```
